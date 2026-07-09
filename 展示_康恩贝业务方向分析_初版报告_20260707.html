@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>康恩贝业务方向分析 — 初版报告</title>
+<style>
+  :root {
+    --bg: #f8f9fa;
+    --card: #fff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #1e40af;
+    --accent-light: #dbeafe;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --warning: #d97706;
+    --warning-light: #fffbeb;
+    --success: #059669;
+    --success-light: #ecfdf5;
+    --highlight: #f0f9ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* ===== 封面 ===== */
+  .cover {
+    background: linear-gradient(135deg, #0a1628 0%, #1e3a6e 50%, #1e40af 100%);
+    color: #fff;
+    padding: 80px 60px;
+    margin-bottom: 48px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .cover .report-type {
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 24px;
+  }
+  .cover h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .cover .subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 40px;
+  }
+  .cover .meta {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 2;
+  }
+
+  /* ===== 卡片容器 ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  /* ===== 排版 ===== */
+  h2 {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent-light);
+  }
+  h3 {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--text);
+    margin: 24px 0 12px;
+  }
+  h4 {
+    font-size: 1.02em;
+    font-weight: 600;
+    color: #374151;
+    margin: 18px 0 8px;
+  }
+  p {
+    margin-bottom: 12px;
+  }
+  .lead {
+    background: var(--highlight);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.8;
+  }
+
+  /* ===== 标签 ===== */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .tag-red    { background: var(--danger-light);  color: var(--danger); }
+  .tag-orange { background: var(--warning-light); color: var(--warning); }
+  .tag-green  { background: var(--success-light); color: var(--success); }
+  .tag-blue   { background: var(--accent-light);  color: var(--accent); }
+  .tag-gray   { background: #f3f4f6; color: #6b7280; }
+
+  /* ===== KPI 卡片网格 ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .kpi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    text-align: center;
+  }
+  .kpi .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .kpi .kpi-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .kpi .kpi-compare {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ===== 表格 ===== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 20px;
+    font-size: 14px;
+  }
+  thead th {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  tbody td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: #fafbfc; }
+  tbody tr:hover { background: #f0f4ff; }
+
+  /* ===== 差距评级 ===== */
+  .gap-lead    { color: var(--success); font-weight: 600; }
+  .gap-even    { color: var(--warning); font-weight: 600; }
+  .gap-behind-s { color: #ea580c; font-weight: 600; }
+  .gap-behind-m { color: #ea580c; font-weight: 600; }
+  .gap-behind-l { color: var(--danger); font-weight: 600; }
+
+  /* ===== 卡片式行动建议 ===== */
+  .action-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .action-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    background: #fafbfc;
+  }
+  .action-card.p0 { border-left: 4px solid var(--danger); }
+  .action-card.p1 { border-left: 4px solid var(--warning); }
+  .action-card .action-num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .action-card h4 { margin-top: 0; }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 768px) {
+    .container { padding: 24px 16px 48px; }
+    .cover { padding: 48px 24px; }
+    .cover h1 { font-size: 24px; }
+    .card { padding: 24px 20px; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ===== 打印 ===== */
+  @media print {
+    body { background: #fff; }
+    .container { max-width: 100%; padding: 0; }
+    .card { box-shadow: none; break-inside: avoid; }
+    .cover { break-after: page; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== 封 面 ===== -->
+  <div class="cover">
+    <div class="report-type">初版报告 &nbsp;|&nbsp; 方向性建议</div>
+    <h1>康恩贝业务方向分析</h1>
+    <div class="subtitle">产品管线重塑 &middot; 增量赛道筛选 &middot; 增长策略方向</div>
+    <div class="meta">
+      <div>项目编号: CN-CONBA-2026-001</div>
+      <div>执笔日期: 2026年7月7日</div>
+      <div>目标读者: 康恩贝战略/BD部门</div>
+      <div>密级: 内部（方向性建议，非最终方案）</div>
+    </div>
+  </div>
+
+  <!-- ===== 第1章: 摘要 ===== -->
+  <div class="card">
+    <h2>1. 摘要</h2>
+
+    <p class="lead">
+      <strong>核心结论：</strong>康恩贝的产品管线面临「金牛过大、明星过小、化药拖累」三重挤压——营收两年下滑、毛利率六年连降的根本原因是存量品种结构老化。破局需要<strong>三件事同步推进</strong>：①将健康消费品升级为第二增长引擎（已验证蛋白粉模式）；②通过并购+经典名方在儿科/神经赛道快速获取品种；③对化药集采瘦狗品种果断退出止血。此三轮驱动下，3年内有望实现营收恢复增长（+8-12% CAGR）和毛利率企稳回升（53%→60%+）。
+    </p>
+
+    <!-- 核心数据仪表盘 -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-value">64.73<span style="font-size:16px">亿</span></div>
+        <div class="kpi-label">2025年营收</div>
+        <div class="kpi-compare">连续两年下滑(-0.64%)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">53.31<span style="font-size:16px">%</span></div>
+        <div class="kpi-label">2025年毛利率</div>
+        <div class="kpi-compare">6年累降23.97pp，或已触底</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">3.73<span style="font-size:16px">亿</span></div>
+        <div class="kpi-label">2025年扣非净利</div>
+        <div class="kpi-compare">两年降幅32.7%</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">7.18<span style="font-size:16px">亿</span></div>
+        <div class="kpi-label">健康消费品营收</div>
+        <div class="kpi-compare">唯一持续增长板块(+23.8%)</div>
+      </div>
+    </div>
+
+    <!-- 推荐赛道排序 -->
+    <h3>推荐赛道排序</h3>
+    <div class="action-cards">
+      <div class="action-card p0">
+        <div class="action-num">Top 1&nbsp;&nbsp; P0 最高优先级（战略级）</div>
+        <h4>健康消费品/中药大健康（药食同源+功能食品+保健品）</h4>
+        <p>「已验证(蛋白粉>100%增速)+赛道大(3,879亿+7.6%增长)+不受集采约束+品牌资产可迁移」——是康恩贝最确定的增长方向。3年目标：从7.2亿→20亿+，占营收比从11%→25%+。</p>
+      </div>
+      <div class="action-card p0">
+        <div class="action-num">Top 2&nbsp;&nbsp; P0 最高优先级</div>
+        <h4>儿科中成药（聚焦儿童消化+儿童呼吸）</h4>
+        <p>「赛道好(180亿+26%增长)+政策好(儿童药优先审评/经典名方通道)+能做(金笛已有基础+OTC渠道完全复用)+时间窗口(竞品尚未形成绝对垄断)」——3年目标：儿科板块达到8-10亿。</p>
+      </div>
+      <div class="action-card p1">
+        <div class="action-num">Top 3&nbsp;&nbsp; P1 高优先级（需先做深度评估）</div>
+        <h4>神经系统中成药+睡眠健康管理</h4>
+        <p>「品类增速最高(10%CAGR)+老龄化需求最确定(130亿市场)+OTC消费场景成熟」——但面临佐力乌灵11亿+的竞争，需差异化定位。5年目标：5-10亿。</p>
+      </div>
+      <div class="action-card p1">
+        <div class="action-num">Top 4&nbsp;&nbsp; P1 中高优先级</div>
+        <h4>妇科中成药（聚焦更年期管理+调理类）</h4>
+        <p>「市场规模大(275亿)+无绝对龙头+经典名方妇科古方丰富」——品牌从零建立需要时间，优先级低于儿科和神经。5年目标：3-5亿。</p>
+      </div>
+      <div class="action-card p1">
+        <div class="action-num">Top 5&nbsp;&nbsp; P1 并购观察（标的出现时升级）</div>
+        <h4>骨关节/骨骼肌肉中成药</h4>
+        <p>「市场规模大(400亿)+渠道可复用」——但竞品品牌壁垒极高（云南白药/奇正），不建议自研，仅通过并购进入。<span class="tag tag-orange">并购观察</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 第2章: 项目背景 ===== -->
+  <div class="card">
+    <h2>2. 项目背景</h2>
+
+    <h3>2.1 客户画像</h3>
+    <table>
+      <thead><tr><th style="width:30%">维度</th><th>详情</th></tr></thead>
+      <tbody>
+        <tr><td><strong>公司名称</strong></td><td>浙江康恩贝制药股份有限公司</td></tr>
+        <tr><td><strong>股票代码</strong></td><td>600572.SH</td></tr>
+        <tr><td><strong>成立年限</strong></td><td>57年（1969年创立），中国中药TOP100前十，OTC综合排名第九</td></tr>
+        <tr><td><strong>实控人</strong></td><td>浙江省国资委（2020年7月入主）</td></tr>
+        <tr><td><strong>核心业务</strong></td><td>「一体两翼」：全品类中药为主体（~51%营收），特色化学药品（~36%）+ 特色健康消费品（~11%）为两翼</td></tr>
+        <tr><td><strong>年营收</strong></td><td>2023: 67.33亿 → 2024: 65.15亿(-3.23%) → 2025: 64.73亿(-0.64%) <span class="tag tag-red">两连降</span></td></tr>
+        <tr><td><strong>归母净利润</strong></td><td>2024: 6.22亿 → 2025: 4.74亿(-23.79%)</td></tr>
+        <tr><td><strong>毛利率</strong></td><td>53.14%（2018年77.11%，连续六年下降，累计下滑23.97pp）</td></tr>
+        <tr><td><strong>研发投入</strong></td><td>3.26亿，占营收5.00%（2024）</td></tr>
+        <tr><td><strong>核心品种</strong></td><td>17个过亿品种——肠炎宁~13亿（消化）、前列康（泌尿）、金笛3.7亿（呼吸）、金艾康>3亿（风湿免疫）、蛋白粉>2亿（保健品）、至心砃/天保宁（心脑血管）、金康灵力（神经）等</td></tr>
+        <tr><td><strong>员工规模</strong></td><td>约8,000人</td></tr>
+        <tr><td><strong>竞品</strong></td><td>云南白药、华润三九、江中药业、以岭药业、太极集团</td></tr>
+        <tr><td><strong>渠道结构</strong></td><td>ToC（OTC零售）为主 + ToB（处方药） + 新零售（阿里/京东/美团）。覆盖约40万家药店终端 <span class="tag tag-orange">[待确认]</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>2.2 问题陈述</h3>
+    <p class="lead">
+      <strong>核心痛点：产品管线老化——存量品种增长停滞 + 缺乏接力重磅品种。</strong><br>
+      肠炎宁（13亿）作为唯一10亿级品种贡献约20%营收，但增速趋平；第二梯队品种（金笛/金艾康/前列康）与第一梯队之间存在近10亿的断崖（13亿→3.7亿→3亿→2亿）；化药板块（~23亿/36%营收）在集采冲击下2025年下降9.27%，持续拖累利润。57年中药企业遭遇典型的「中年危机」——金牛太大但已老，明星太小且太少。
+    </p>
+
+    <h3>2.3 项目范围</h3>
+    <table>
+      <thead><tr><th style="width:20%">维度</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>问题领域</strong></td><td>战略——业务方向与品种组合选择</td></tr>
+        <tr><td><strong>时间约束</strong></td><td>3个月内产出下一步业务方向（药品品种和治疗领域选择）的方向性建议</td></tr>
+        <tr><td><strong>预算约束</strong></td><td>不设预算硬约束（但并购策略应保持合理财务纪律）</td></tr>
+        <tr><td><strong>不可触碰线</strong></td><td>不偏好大规模裁员/组织重构</td></tr>
+        <tr><td><strong>转型偏好</strong></td><td>并购整合获取管线 + 中药+大健康双轮驱动</td></tr>
+        <tr><td><strong>决策者</strong></td><td>战略/BD部门</td></tr>
+        <tr><td><strong>成功标准</strong></td><td>利润率企稳回升 + 营收恢复增长</td></tr>
+        <tr><td><strong>紧迫度</strong></td><td>中等——2024年医疗并购市场750亿(+82%)，竞品在加速扫货，窗口期不容错过</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 第3章: 专属方法论 ===== -->
+  <div class="card">
+    <h2>3. 专属方法论：康恩贝「管线重塑·赛道聚焦」分析框架</h2>
+
+    <p class="lead">
+      <strong>问题本质定义：</strong>本质不是简单的「增长乏力」，而是<strong>存量中药大品种生命周期进入平台期 + 化药板块被集采系统性压缩 + 缺乏接力重磅品种的三重挤压</strong>——需要在3个月内回答「下一批10亿+品种在哪、怎么拿」的方向性问题。医药行业的强监管属性决定了：政策变量占行业格局60%+的解释力，因此分析必须从政策层开始自上而下过滤。
+    </p>
+
+    <h3>3a. 问题-方法论映射</h3>
+    <table>
+      <thead><tr><th style="width:22%">客户具体问题</th><th style="width:25%">选择框架</th><th>选择此框架的核心理由</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>哪些治疗领域和政策方向有中长期结构性红利？</td>
+          <td><strong>PESTEL</strong></td>
+          <td>医药行业是强监管行业，政策从准入/定价/使用三个环节同时重塑行业格局。PESTEL做宏观外生变量的系统性扫描，是唯一能自上而下识别「政策顺风赛道」（如中药创新药优先审评、经典名方免临床）与「政策逆风赛道」（如化药集采常态化）的框架。</td>
+        </tr>
+        <tr>
+          <td>哪些治疗领域赛道的结构性盈利能力更强？</td>
+          <td><strong>Porter五力</strong></td>
+          <td>不同治疗领域的内卷程度差异极大——Porter五力可对每个备选领域的结构性盈利潜力做量化评分，筛出「肥水赛道」。医药行业特殊修饰：医保局作为单一最大支付方具有超强买方议价力，OTC自费场景则买方分散。</td>
+        </tr>
+        <tr>
+          <td>康恩贝现有资源和能力在哪些领域有可转移的竞争优势？</td>
+          <td><strong>SWOT</strong></td>
+          <td>「赛道好不等于康恩贝能做」。SWOT做「外部机会×内部能力」的交叉匹配——哪些结构性机会恰好落在康恩贝的品牌/渠道/供应链能力圈内。是唯一同时覆盖内外且交互分析的框架。</td>
+        </tr>
+        <tr>
+          <td>「管线老化」如何结构化拆解为可逐个分析的子问题？</td>
+          <td><strong>MECE问题树</strong></td>
+          <td>「管线老化需转型」是复合型战略问题。MECE将其拆解为4大分支：存量优化/增量赛道选择/获取路径设计/组合风险平衡。每个叶子节点可独立获取数据、得出结论。药品增长的驱动力来自疾病谱和诊疗指南，因此第一层按「治疗领域」拆解而非「产品SKU」。</td>
+        </tr>
+        <tr>
+          <td>现有17个过亿品种该保谁、放谁、催谁？</td>
+          <td><strong>BCG矩阵</strong></td>
+          <td>BCG按市场增速×相对市场份额做四象限分类，清晰指引资源再分配。化药集采品种即使营收高也应标注为「瘦狗」（盈利结构已不可逆）。GE矩阵需要更多维度数据但3个月窗口内数据可得性不足。</td>
+        </tr>
+        <tr>
+          <td>具体的增长策略方向是什么？并购/自研/合作怎么配？</td>
+          <td><strong>Ansoff矩阵</strong></td>
+          <td>前面5个框架完成「分析判断」，Ansoff做「行动方案」——市场渗透/产品开发/市场开发/多元化。Ansoff在医药行业的改造：产品开发特指「中药1类/2类/3.1类/4类」各注册通道，多元化区分「相关（邻近治疗领域）」与「非相关（大健康/药食同源）」。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>3b. 框架组合的解题逻辑链</h3>
+    <p>六个框架不是并行使用，而是<strong>接力传递</strong>——前一个框架的输出是后一个框架的关键输入，形成不可逆的线性推理链：</p>
+    <ol style="margin: 12px 0 16px 24px; line-height: 2;">
+      <li><strong>PESTEL</strong> 做政策风向标，圈定「政策友好治疗领域大名单」（16→通过过滤→筛出入围领域）</li>
+      <li><strong>Porter五力</strong> 在大名单内做行业吸引力量化排序，产出「赛道吸引力评分矩阵」</li>
+      <li><strong>SWOT</strong> 将吸引力排序与康恩贝能力做交叉匹配，产出「能做且值得做的目标治疗领域短名单」（5个推荐）</li>
+      <li><strong>MECE</strong> 对短名单做结构化拆解，建立「4大分析维度体系」（骨架）</li>
+      <li><strong>BCG</strong> 对现有17个过亿品种做四象限分类，产出「存量品种处置建议」（存量视角）</li>
+      <li><strong>Ansoff</strong> 将增量赛道选择与存量处置建议融合，按产品×市场两维度生成「四项具体增长策略」（最终输出）</li>
+    </ol>
+
+    <h3>3c. 框架融合架构图</h3>
+    <pre style="background:#f8f9fa; border:1px solid var(--border); border-radius:4px; padding:16px; font-size:13px; line-height:1.9; overflow-x:auto;">
+康恩贝管线重塑分析架构 V1
+├── <strong>P0 宏观环境扫描</strong> [来源: PESTEL]
+│   ├── P-政治/政策: 中药注册改革/集采/医保/DRG/振兴战略
+│   ├── E-经济: 医保基金收支/健康消费支出
+│   ├── S-社会: 老龄化3亿60+/中医药认知变化
+│   ├── T-技术: 中医药现代化/循证研究
+│   ├── E-环境: 中药材资源可持续性(GAP)
+│   └── L-法律: 品种保护/专利链接
+│
+├── <strong>P0 赛道吸引力评分</strong> [来源: Porter五力]
+│   ├── 候选领域: 已有6个 + 新候选10个 = 16个
+│   ├── 五力评分: 竞争强度25% + 新进入20% + 替代15% + 买方20% + 供方20%
+│   └── 政策一票否决: 集采降价>50% / DRG挤出领域
+│
+├── <strong>P0 能力匹配</strong> [来源: SWOT]
+│   ├── S(5条): 多品牌/OTC渠道/国资/全产业链/57年信任
+│   ├── W(6条): 毛利率连降/营收下滑/化药集采/管线薄弱/管理层变动/ROE走低
+│   ├── O(5条): 老龄化/政策红利/健康消费/并购窗口/高增长赛道
+│   ├── T(4条): 中成药集采/连锁自有品牌/竞品扩张/化药替代
+│   └── 交叉策略: SO(进攻) + WO(补短板) + ST(防御) + WT(收缩)
+│
+├── <strong>P0 结构化拆解</strong> [来源: MECE]
+│   ├── Branch_1 存量优化(P0): BCG分类→品种处置→生命周期判定
+│   ├── Branch_2 增量赛道筛选(P0): 三层漏斗→5个推荐短名单
+│   ├── Branch_3 获取路径设计(P1): 自研/并购/引进/经典名方
+│   └── Branch_4 组合风险平衡(P1): 治疗领域分散/化药处置
+│
+├── <strong>P0 存量分类</strong> [来源: BCG矩阵]
+│   ├── 明星: 蛋白粉(>100%增速) + 金笛(3.7亿)
+│   ├── 金牛: 肠炎宁(13亿) + 前列康
+│   ├── 问题: 金康灵力/金艾康/心脑血管
+│   └── 瘦狗: 化药集采品种 + 长尾小品种
+│
+└── <strong>P0 策略生成</strong> [来源: Ansoff矩阵]
+    ├── 策略1_市场渗透: 肠炎宁品牌升级/金笛儿童化/前列康延伸
+    ├── 策略2_产品开发: 经典名方快车道/二次开发/研发转轨
+    ├── 策略3_市场开发: 县域下沉/O2O/数字化渠道
+    └── 策略4_多元化: 儿科并购/大健康品牌并购/化药置换退出
+    </pre>
+
+    <h3>3d. 方法论的局限性</h3>
+    <table>
+      <thead><tr><th>局限</th><th>说明</th><th>应对</th></tr></thead>
+      <tbody>
+        <tr><td>假设行业结构相对稳定</td><td>不适用于技术颠覆性变革（AI制药/基因治疗替代中药等「黑天鹅」）</td><td>如出现重大技术突破或监管范式根本性改变，需从PESTEL层重新推理</td></tr>
+        <tr><td>BCG/Ansoff假设市场份额数据可获取</td><td>中药细分子行业缺乏权威统计口径，矩阵精度下降</td><td>对缺乏权威数据的领域降级使用定性分类，明确标注置信度</td></tr>
+        <tr><td>不适用于纯商业模式创新问题</td><td>Porter五力基于传统产业链结构假设，无法评估中药+互联网医院等创新模式</td><td>如需评估创新商业模式，建议追加Business Model Canvas或Blue Ocean框架</td></tr>
+        <tr><td>未涵盖组织能力评估</td><td>康恩贝是否具备进入新领域的「软实力」，属于Step 3深度分析范畴</td><td>3个月时间窗口和「不偏好大规模组织重构」约束下暂不展开，如并购方案涉及跨行业整合需补充McKinsey 7S分析</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 第4章: 诊断结果 ===== -->
+  <div class="card">
+    <h2>4. 诊断结果</h2>
+
+    <!-- 4.1 五年财务趋势 -->
+    <h3>4.1 五年财务趋势：恶化速度 > 改善速度</h3>
+    <p class="lead">
+      <strong>统领句：</strong>康恩贝呈现「营收微降、利润骤降、毛利率腰斩」的典型中期衰退信号——扣非净利两年跌去33%、毛利率六年累降24pp，但健康消费品板块五连增（唯一亮点）和毛利率微升0.17pp（2025年首次企稳）提供了拐点可能。
+    </p>
+    <table>
+      <thead><tr><th>指标</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>趋势</th></tr></thead>
+      <tbody>
+        <tr><td>营收（亿元）</td><td>61.51</td><td>60.00</td><td>67.33</td><td>65.15</td><td>64.73</td><td><span class="tag tag-orange">⬇ 两连降</span></td></tr>
+        <tr><td>扣非归母净利润（亿元）</td><td>1.58</td><td>4.83</td><td>5.54</td><td>5.16</td><td>3.73</td><td><span class="tag tag-red">⬇⬇ 两年跌33%</span></td></tr>
+        <tr><td>毛利率（%）</td><td>64.3</td><td>59.3</td><td>57.5</td><td>53.14</td><td>53.31</td><td><span class="tag tag-red">⬇⬇ 六年跌24pp</span></td></tr>
+        <tr><td>ROE（%）</td><td>[待补充]</td><td>[待补充]</td><td>[待补充]</td><td>9.12</td><td>6.86</td><td><span class="tag tag-orange">⬇ -24.8%</span></td></tr>
+        <tr><td>健康消费品营收（亿元）</td><td>—</td><td>—</td><td>5.80</td><td>6.40</td><td>7.18</td><td><span class="tag tag-green">⬆ 唯一增长</span></td></tr>
+        <tr><td>健康消费品增速（%）</td><td>—</td><td>—</td><td>—</td><td>+10.3%</td><td>+12.2%</td><td><span class="tag tag-green">⬆ 持续加速</span></td></tr>
+        <tr><td>研发投入占营收比（%）</td><td>3.09</td><td>3.27</td><td>4.66</td><td>5.00</td><td>5.10</td><td><span class="tag tag-green">⬆ 五连增</span></td></tr>
+        <tr><td>化药板块增速（%）</td><td>[待补充]</td><td>[待补充]</td><td>[待补充]</td><td>[待补充]</td><td>-9.27%</td><td><span class="tag tag-red">⬇ 加速萎缩</span></td></tr>
+      </tbody>
+    </table>
+
+    <h4>关键发现</h4>
+    <table>
+      <thead><tr><th style="width:15%">类别</th><th>指标</th><th>判断</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">改善信号</span></td><td>健康消费品唯一持续增长板块（5.8→6.4→7.2亿）；研发投入5年连增（3.09%→5.10%）；中药材饮片+32.53%</td><td>有亮点但规模太小不足以扭转大局</td></tr>
+        <tr><td><span class="tag tag-red">恶化信号</span></td><td>扣非净利两年-33%（5.54→3.73亿）；毛利率六年-24pp（77%→53%）；ROE从9.12%降至6.86%；化药-9.27%</td><td>核心盈利指标全面恶化，形势严峻</td></tr>
+        <tr><td><span class="tag tag-orange">拐点待确认</span></td><td>毛利率微升+0.17pp——可能触底；中药板块降幅收窄；营收降幅收窄（-3.23%→-0.64%）</td><td>「见底反弹」or「下跌中继」——需要2-3个季度数据确认</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4.2 SWOT分析 -->
+    <h3>4.2 SWOT 分析：优势正在失效，机会窗口有限</h3>
+    <p class="lead">
+      <strong>统领句：</strong>康恩贝的核心矛盾不是「缺乏优势」而是<strong>「优势正在失效」</strong>——品牌和渠道两大优势在集采和渠道权力转移面前，护城河在变浅。最紧迫的行动是：在存量优势完全失效之前，用它们换取新的增长引擎。
+    </p>
+    <table>
+      <thead><tr><th colspan="2" style="width:50%; background:#059669;">S-优势（Strength）</th><th colspan="2" style="width:50%; background:#dc2626;">W-劣势（Weakness）</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="width:5%"><strong>S1</strong></td>
+          <td><strong>17个过亿品种+多品牌矩阵</strong>，覆盖7大治疗领域。肠炎宁13亿（消化OTC前三），前列康=前列腺品类代名词。<br><span style="color:var(--muted);font-size:12px;">[用户提供: 2026-07-07]</span></td>
+          <td style="width:5%"><strong>W1</strong></td>
+          <td><strong>毛利率6年连续下滑</strong>：77.11%(2018)→53.31%(2025)，累降23.97pp。化药集采+原料成本+产品结构三杀。<br><span style="color:var(--muted);font-size:12px;">[年报: 康恩贝 2018-2025]</span></td>
+        </tr>
+        <tr>
+          <td><strong>S2</strong></td>
+          <td><strong>OTC渠道深度覆盖</strong>（全国第九），约40万家药店终端。品牌药+OTC组合享有消费者自主决策权。<br><span style="color:var(--muted);font-size:12px;">[推断: 基于行业格局]</span></td>
+          <td><strong>W2</strong></td>
+          <td><strong>营收连续两年下滑</strong>：67.33→65.15→64.73亿。降幅收窄但未转正，化药-9.27%被中药「填坑」掩盖。<br><span style="color:var(--muted);font-size:12px;">[年报: 康恩贝 2023-2025]</span></td>
+        </tr>
+        <tr>
+          <td><strong>S3</strong></td>
+          <td><strong>浙江省国资委控股</strong>：省内政策资源+并购审批顺畅+国资信用背书，在并购窗口期有报价和整合优势。<br><span style="color:var(--muted);font-size:12px;">[推断: 国资控股企业普遍特征]</span></td>
+          <td><strong>W3</strong></td>
+          <td><strong>化药板块集采冲击</strong>（~23亿/36%营收）。2025年-9.27%，中成药集采第三批均降68%、第四批已含OTC品种。<br><span style="color:var(--muted);font-size:12px;">[用户提供+推断]</span></td>
+        </tr>
+        <tr>
+          <td><strong>S4</strong></td>
+          <td><strong>全产业链</strong>：上游GAP种植+中游8个生产基地+下游OTC/处方/电商。自建种植基地锁定原料成本确定性。<br><span style="color:var(--muted);font-size:12px;">[推断]</span></td>
+          <td><strong>W4</strong></td>
+          <td><strong>创新药研发管线薄弱</strong>：以二次开发+仿制药为主，ZY13/洋常春藤口服液/TFA003均为早期，3-5年产出10亿+品种概率低。<br><span style="color:var(--muted);font-size:12px;">[年报: 康恩贝 2024]</span></td>
+        </tr>
+        <tr>
+          <td><strong>S5</strong></td>
+          <td><strong>57年品牌积淀</strong>：消费者对「老字号」中药品牌的信任壁垒，新进入者难以短期复制。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+          <td><strong>W5</strong></td>
+          <td><strong>管理层频繁变动</strong>：「两年三换帅」影响战略连续性和并购执行——并购需要稳定的决策和投后管理团队。<br><span style="color:var(--muted);font-size:12px;">[用户提供+推断]</span></td>
+        </tr>
+      </tbody>
+      <thead><tr><th colspan="2" style="background:#2563eb;">O-机会（Opportunity）</th><th colspan="2" style="background:#d97706;">T-威胁（Threat）</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>O1</strong></td>
+          <td><strong>3亿60岁+老龄化需求</strong>：心脑血管1,055亿、神经系统130亿(+10%CAGR)、骨关节400亿——中成药在慢病管理有天然适配性。<br><span style="color:var(--muted);font-size:12px;">[用户提供+推断]</span></td>
+          <td><strong>T1</strong></td>
+          <td><strong>中成药集采扩围</strong>：第三批均降68%，第四批89种含OTC。若肠炎宁纳入集采且降价50%+，将触发黑天鹅（13亿/20%营收暴露）。<br><span style="color:var(--muted);font-size:12px;">[用户提供+推断]</span></td>
+        </tr>
+        <tr>
+          <td><strong>O2</strong></td>
+          <td><strong>中药政策红利窗口</strong>：2024年12个中药新药获批，经典名方3.1类免临床2-3年获批，107首古方大量未开发。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+          <td><strong>T2</strong></td>
+          <td><strong>连锁自有品牌替代</strong>：老百姓/益丰等头部连锁推自有品牌中成药——渠道权力从「品牌方」向「终端连锁」转移。<br><span style="color:var(--muted);font-size:12px;">[推断]</span></td>
+        </tr>
+        <tr>
+          <td><strong>O3</strong></td>
+          <td><strong>保健品3,879亿（+7.6%）</strong>：中药类保健品占35.76%(~1,387亿)。蛋白粉>100%增速已验证大健康可行性。云南白药健康品~70亿为标杆。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+          <td><strong>T3</strong></td>
+          <td><strong>头部竞品大健康扩张</strong>：华润三九CHC 125亿+处方药60亿，云南白药健康品~70亿，江中脾胃大健康——增量赛道选择空间被压缩。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+        </tr>
+        <tr>
+          <td><strong>O4</strong></td>
+          <td><strong>2024年医疗并购750亿（+82%）</strong>：华润/国药系持续整合，大量年营收1-5亿「小而美」中药标的可获取。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+          <td><strong>T4</strong></td>
+          <td><strong>化药/生物药替代压力</strong>：DRG/DIP下中成药若缺乏循证证据，将在院内市场系统性边缘化→必须聚焦OTC自费场景。<br><span style="color:var(--muted);font-size:12px;">[推断]</span></td>
+        </tr>
+        <tr>
+          <td><strong>O5</strong></td>
+          <td><strong>儿科中药+26%CAGR（180亿）</strong>，神经系统+10%CAGR（130亿）——结构性高增长赛道远超中成药行业均值（3-5%）。<br><span style="color:var(--muted);font-size:12px;">[用户提供]</span></td>
+          <td></td><td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>SWOT核心矛盾与交互关系</h4>
+    <p>康恩贝最核心的矛盾是<strong>「O3（健康消费升级的巨大机会）」vs「W1（毛利率6年连降导致投资能力萎缩）」</strong>——机会就在眼前，但失血的口子还没堵上。化解路径：</p>
+    <ul style="margin: 8px 0 12px 24px; line-height: 2;">
+      <li><strong>SO（进攻）</strong>——用S2(OTC渠道)+S1(多品牌)+S3(国资) × O1(老龄化)+O2(政策红利)+O5(高增长赛道) → 优先进入儿科和神经品类</li>
+      <li><strong>WO（补短板）</strong>——用O4(并购窗口)+O2(政策红利) × W4(管线薄弱) → 并购弥补自研不足；用O3(健康消费) × W3(化药拖累) → 化药止血→大健康输血</li>
+      <li><strong>ST（防御）</strong>——用S1(品牌)+S5(57年信任) × T1(集采)+T2(自有品牌) → 强化肠炎宁品牌不可替代性；用S2(OTC渠道) × T3(竞品) → 不争第一争唯一</li>
+      <li><strong>WT（收缩）</strong>——W3(化药集采)+W2(营收下滑) × T1(集采扩面) → 化药瘦狗品种果断止损</li>
+    </ul>
+
+    <!-- 4.3 BCG产品组合 -->
+    <h3>4.3 BCG产品组合矩阵：金字塔倒挂——金牛过大、明星太小</h3>
+    <p class="lead">
+      <strong>统领句：</strong>BCG矩阵揭示的核心问题——<strong>金字塔倒挂</strong>：金牛品种（肠炎宁+前列康）贡献大部分利润但增长停滞，而高增长的明星品种（蛋白粉+金笛）规模太小不足以接棒。这是营收连续两年下滑的根因。
+    </p>
+    <table>
+      <thead><tr><th style="width:10%">象限</th><th style="width:25%">品种/品类</th><th style="width:20%">量化支撑</th><th style="width:20%">策略</th><th>关键风险</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green">明星</span></td>
+          <td><strong>蛋白粉/健康消费品</strong></td>
+          <td>>2亿，增速>100%——保健品市场3,879亿+7.6%。在中药类保健细分(~1,387亿)快速建立品牌</td>
+          <td><strong>继续加码投资</strong>——品牌建设+品类延伸(代餐/运动营养/特医食品)。不要因为是「非药品」而轻视</td>
+          <td>高速增长是否可持续？若是疫情后补偿性增长，增长可能回落</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">明星</span></td>
+          <td><strong>金笛/呼吸品类</strong></td>
+          <td>3.7亿，呼吸系统759亿+5%CAGR。疫情后呼吸道健康关注度持续</td>
+          <td><strong>加大品牌投入</strong>——儿童呼吸道专用药定位差异化，避开999感冒灵(37.5亿)正面</td>
+          <td>与华润三九999感冒灵正面竞争；季节性波动大</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">金牛</span></td>
+          <td><strong>肠炎宁/消化品类</strong></td>
+          <td>~13亿，贡献-20%营收。消化中成药零售前三，品牌壁垒强。「腹泻就吃肠炎宁」</td>
+          <td><strong>维持+品牌延伸</strong>——产生的现金流反哺明星品种。延伸至肠道健康管理平台</td>
+          <td>OTC中成药集采若扩面覆盖消化品种→金牛变瘦狗</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">金牛</span></td>
+          <td><strong>前列康/泌尿品类</strong></td>
+          <td>推测3-5亿。「前列康=前列腺健康」的品类独占心智是最大壁垒</td>
+          <td><strong>维持+品牌延伸探索</strong>——男性健康管理平台</td>
+          <td>品类天花板有限，延伸难度大于云南白药→牙膏</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">问题</span></td>
+          <td><strong>金康灵力/神经品类</strong></td>
+          <td>推测1-3亿。品类增速10%CAGR(130亿)。龙头佐力乌灵11亿+，差距大</td>
+          <td><strong>选择性投资</strong>——先评估能否在佐力缝隙找到差异化定位，再决定All in或退出</td>
+          <td>不能成为「小乌灵」——差异化定位是生死的</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">问题</span></td>
+          <td><strong>金艾康/风湿免疫</strong></td>
+          <td>>3亿，赛道400亿。汉防己甲素有成分差异化优势</td>
+          <td><strong>选择性培育</strong>——加大循证研究，如能进入临床指南则升级为明星</td>
+          <td>循证证据投入大+周期长</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">问题</span></td>
+          <td><strong>至心砃/天保宁/心脑血管</strong></td>
+          <td>推测3-5亿。1,055亿大市场但增速仅3%CAGR，CR3已被步长/以岭/天士力瓜分</td>
+          <td><strong>维持，不下牌桌</strong>——不追加投资等老龄化自然增长</td>
+          <td>处方药受DRG挤压</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">瘦狗</span></td>
+          <td><strong>化药集采品种</strong></td>
+          <td>~23亿板块，2025年-9.27%。无品牌壁垒的仿制药集采后量价齐跌</td>
+          <td><strong>分品种退出</strong>——保留有品牌/成本优势的，退出纯集采品种（60-70%）</td>
+          <td>退出估值低于预期</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">瘦狗</span></td>
+          <td><strong>长尾小品种中成药</strong></td>
+          <td>17个过亿品种之外的大量「僵尸批文」</td>
+          <td><strong>批文清理</strong>——出售/注销低效批文，释放管理资源</td>
+          <td>处置成本可能高于回收</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>BCG资源分配建议</h4>
+    <table>
+      <thead><tr><th>象限</th><th>品种</th><th>预算占比建议</th><th>核心动作</th></tr></thead>
+      <tbody>
+        <tr><td>明星</td><td>蛋白粉+金笛</td><td>50%+</td><td>加码投资，扩大份额领先</td></tr>
+        <tr><td>金牛</td><td>肠炎宁+前列康</td><td>维持现有投入</td><td>现金流反哺明星+品牌延伸延长生命周期</td></tr>
+        <tr><td>问题</td><td>金康灵力/金艾康/心脑血管</td><td>选择性</td><td>深度评估→决定All in或退出</td></tr>
+        <tr><td>瘦狗</td><td>化药集采+长尾批文</td><td>停止追加</td><td>退出→回收资源至中药+大健康</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 4.4 治疗领域漏斗筛选 -->
+    <h3>4.4 治疗领域漏斗筛选：从16→5的层层过滤</h3>
+    <p class="lead">
+      <strong>统领句：</strong>采用三层漏斗（PESTEL政策过滤→Porter五力评分→SWOT能力匹配），从16个候选领域中筛选出5个推荐赛道。儿科中成药（综合吸引力4.5/5）和健康消费品（4.0/5）并列最高优先级推荐。
+    </p>
+
+    <h4>漏斗第一层：PESTEL政策过滤（16→14）</h4>
+    <table>
+      <thead><tr><th style="width:20%">候选领域</th><th>过滤结果</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td>儿科中成药</td><td><span class="tag tag-green">✅✅ 政策高度友好</span></td><td>儿童药短缺是国家重点问题——鼓励研发+优先审评+绿色通道</td></tr>
+        <tr><td>保健品/功能食品/药食同源</td><td><span class="tag tag-green">✅✅ 政策高度友好</span></td><td>非药品，不受集采/DRG影响。药食同源目录持续扩容</td></tr>
+        <tr><td>神经系统中成药</td><td><span class="tag tag-green">✅ 政策友好</span></td><td>老龄化驱动+中药政策重点支持（失眠/焦虑调理）+OTC属性强</td></tr>
+        <tr><td>妇科中成药</td><td><span class="tag tag-green">✅ 政策风险低</span></td><td>OTC消费属性+品牌可建立差异化</td></tr>
+        <tr><td>骨关节中成药</td><td><span class="tag tag-green">✅ 政策风险低</span></td><td>老龄化需求+OTC外用属性</td></tr>
+        <tr><td>呼吸系统中成药</td><td><span class="tag tag-green">✅ 政策风险低</span></td><td>OTC为主+自费决策场景</td></tr>
+        <tr><td>风湿免疫中成药</td><td><span class="tag tag-green">✅ 政策风险中低</span></td><td>OTC+处方混合场景</td></tr>
+        <tr><td>精神/睡眠中成药</td><td><span class="tag tag-green">✅ 政策友好</span></td><td>归入神经系统合并评估</td></tr>
+        <tr><td>中药饮片/精致饮片</td><td><span class="tag tag-green">✅ 政策友好</span></td><td>不纳入集采+保留加成+消费升级</td></tr>
+        <tr><td>心脑血管中成药</td><td><span class="tag tag-orange">⚠️ 保留但降级</span></td><td>处方药属性+DRG下挤压风险，仅维持</td></tr>
+        <tr><td>皮肤科中成药</td><td><span class="tag tag-orange">⚠️ 保留评估</span></td><td>市场偏小+品牌建立周期长</td></tr>
+        <tr><td>代谢/糖尿病中成药</td><td><span class="tag tag-orange">⚠️ 保留评估</span></td><td>化药/GLP-1强势，中成药缺乏临床优势</td></tr>
+        <tr><td>中药配方颗粒</td><td><span class="tag tag-orange">⚠️ 保留评估</span></td><td>集采试点推进中+需要医院渠道能力</td></tr>
+        <tr><td>肿瘤辅助中成药</td><td><span class="tag tag-red">❌ 已排除</span></td><td>政策逆风——医保控费重点领域+中药注射剂监管风险</td></tr>
+      </tbody>
+    </table>
+
+    <h4>漏斗第二层：Porter五力赛道吸引力评分 Top 5</h4>
+    <table>
+      <thead><tr><th>排名</th><th>治疗领域</th><th>加权总分</th><th>评级</th><th>关键评分维度</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>儿科中成药</strong></td><td>2.2</td><td>⭐⭐⭐⭐ 高吸引力</td><td>买方议价力1.5（OTC零售/家长自主决策）+替代品威胁1.5（中成药对儿童有安全性认知优势）</td></tr>
+        <tr><td>2</td><td><strong>神经系统（含睡眠）</strong></td><td>2.3</td><td>⭐⭐⭐⭐ 高吸引力</td><td>买方议价力1.5（OTC自费场景）+竞争强度2.5（佐力独大但市场够大）</td></tr>
+        <tr><td>3</td><td><strong>妇科中成药</strong></td><td>2.5</td><td>⭐⭐⭐☆ 中高吸引力</td><td>替代品威胁2.0（调理概念在妇科领域接受度极高）+买方议价力2.0（OTC+品牌忠诚度高）</td></tr>
+        <tr><td>4</td><td><strong>保健品/功能食品</strong></td><td>2.6</td><td>⭐⭐⭐☆ 中高吸引力</td><td>买方议价力1.5（消费者极度分散）+供方议价力2.0（原料供给充分）；但进入壁垒低(4.0)导致竞争升温</td></tr>
+        <tr><td>5</td><td><strong>骨关节/骨骼肌肉</strong></td><td>2.8</td><td>⭐⭐⭐ 中等吸引力</td><td>竞品品牌壁垒极高（云南白药/奇正），结构吸引力被竞争强度拉低</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--muted);">评分标准: 1分=最有吸引力，5分=最无吸引力；加权总分越低越好。权重: 现有竞争25% + 新进入者20% + 替代品15% + 买方20% + 供方20%。来源: [推断: 基于市场规模和治疗领域特性，需竞品份额数据验证]</p>
+
+    <h4>漏斗第三层：SWOT能力匹配 → 推荐短名单</h4>
+    <table>
+      <thead><tr><th>排名</th><th>赛道</th><th>综合吸引力</th><th>渠道复用</th><th>品牌迁移</th><th>进入方式</th><th>3年营收目标</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green">1</span></td>
+          <td><strong>健康消费品/大健康</strong></td>
+          <td>★★★★☆ 4.0</td>
+          <td>★★★★★</td>
+          <td>★★★★☆</td>
+          <td>蛋白粉品牌独立+品类延伸（灵芝孢子粉/铁皮石斛/代餐/特医食品）+消费品人才引进</td>
+          <td>7.2亿→20亿+</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">2</span></td>
+          <td><strong>儿科中成药</strong></td>
+          <td>★★★★☆ 4.5</td>
+          <td>★★★★★</td>
+          <td>★★★☆☆</td>
+          <td>金笛品牌独立化+经典名方3.1类快速获批+并购有儿科品种的中小企业</td>
+          <td>~4亿→8-10亿</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">3</span></td>
+          <td><strong>神经/睡眠</strong></td>
+          <td>★★★★☆ 4.3</td>
+          <td>★★★★☆</td>
+          <td>★★☆☆☆</td>
+          <td>经典名方酸枣仁汤+差异化品牌定位（都市失眠）+消费品化延伸</td>
+          <td>1-3亿→5-10亿</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">4</span></td>
+          <td><strong>妇科中成药</strong></td>
+          <td>★★★☆☆ 3.8</td>
+          <td>★★★★☆</td>
+          <td>★★★☆☆</td>
+          <td>经典名方妇科调理品种+独立品牌（如「康恩贝·坤宁」）+并购中型妇科企业</td>
+          <td>从零→3-5亿</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">5</span></td>
+          <td><strong>骨关节外用</strong></td>
+          <td>★★★☆☆ 3.3</td>
+          <td>★★★★☆</td>
+          <td>★★☆☆☆</td>
+          <td><strong>仅并购进入</strong>——寻找有骨伤外用独家品种的区域性企业</td>
+          <td>并购后3-5年→5亿+</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 4.5 内外对照 -->
+    <h3>4.5 内外对照：关键差距矩阵</h3>
+    <p class="lead">
+      <strong>统领句：</strong>与华润三九/云南白药的对比揭示康恩贝在多个关键维度处于「中等偏下」——营收规模差4-6倍、明星品种差2-3倍、并购活跃度几乎为零。但值得注意的是，<strong>纯药品规模与云南白药药品板块基本相当（65亿 vs 69亿）</strong>，提示康恩贝的大健康延伸潜力被严重低估。
+    </p>
+    <table>
+      <thead><tr><th>维度</th><th>康恩贝</th><th>vs 华润三九</th><th>vs 云南白药</th><th>量化差距</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>营收规模</strong></td>
+          <td>65.15亿（2024）</td>
+          <td><span class="gap-behind-l">落后-大</span></td>
+          <td><span class="gap-behind-l">落后-大</span></td>
+          <td>276亿(差4.2倍) / 400亿(差6.1倍)。但纯药品规模相当(65 vs 69亿)</td>
+        </tr>
+        <tr>
+          <td><strong>毛利率</strong></td>
+          <td>53.14%（2024）</td>
+          <td><span class="gap-even">持平</span></td>
+          <td><span class="gap-lead">领先</span></td>
+          <td>~55%(差1.86pp)。核心是趋势：康恩贝6年连降 vs 竞品稳定</td>
+        </tr>
+        <tr>
+          <td><strong>健康消费品占比</strong></td>
+          <td>11.1%（7.2亿）</td>
+          <td><span class="gap-behind-l">落后-大</span></td>
+          <td><span class="gap-behind-m">落后-中</span></td>
+          <td>CHC~45%(125亿) / ~17.5%(70亿)。规模差10-17倍</td>
+        </tr>
+        <tr>
+          <td><strong>明星品种规模</strong></td>
+          <td>肠炎宁13亿</td>
+          <td><span class="gap-behind-l">落后-大</span></td>
+          <td><span class="gap-behind-m">落后-中</span></td>
+          <td>999感冒灵37.5亿(差2.9倍) / 白药气雾剂21亿(差1.6倍)</td>
+        </tr>
+        <tr>
+          <td><strong>研发投入比率</strong></td>
+          <td>5.00%（3.26亿）</td>
+          <td><span class="gap-lead">领先</span></td>
+          <td><span class="gap-lead">领先</span></td>
+          <td>3.45%(领先1.55pp) / 0.84%(领先4.16pp)。但投入产出效率存疑</td>
+        </tr>
+        <tr>
+          <td><strong>并购活跃度</strong></td>
+          <td>近年近乎为零</td>
+          <td><span class="gap-behind-l">落后-大</span></td>
+          <td><span class="gap-even">持平</span></td>
+          <td>华润系年并购数十亿 vs 康恩贝几乎缺席并购市场</td>
+        </tr>
+        <tr>
+          <td><strong>产品管线广度</strong></td>
+          <td>7个治疗领域</td>
+          <td><span class="gap-behind-m">落后-中</span></td>
+          <td><span class="gap-behind-s">落后-小</span></td>
+          <td>华润10+(差30-50%)。但广度不等于深度——康恩贝需做深而非做广</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>差距总结</h4>
+    <table>
+      <thead><tr><th>类别</th><th>维度</th><th>差距级别</th><th>影响</th></tr></thead>
+      <tbody>
+        <tr><td style="background:#fef2f2;"><strong>落后项</strong></td><td>营收规模(vs华润/白药)、明星品种(vs999感冒灵)、并购活跃度(vs华润)、健康消费品占比(vs华润CHC)、管线广度(vs华润)</td><td><span class="tag tag-red">落后-大</span>×4 / <span class="tag tag-orange">落后-中</span>×2</td><td>在并购竞价、品牌投入、研发支出上整体劣势——必须差异化竞争而非正面跟随</td></tr>
+        <tr><td style="background:#ecfdf5;"><strong>领先项</strong></td><td>研发比率(vs白药/华润)、明星品种(vs健胃消食片)、营收(vs江中)、管线广度(vs江中)</td><td><span class="tag tag-green">领先</span>×4</td><td>研发比率领先但效率需提升；在中小型中药企业中仍有相对竞争优势</td></tr>
+        <tr><td style="background:#fffbeb;"><strong>持平项</strong></td><td>毛利率(vs华润)、研发比率(vs中药行业基准)</td><td><span class="tag tag-orange">持平</span>×2</td><td>毛利率与华润同一区间但趋势恶化，是最大隐忧</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 第5章: 战略方向建议 ===== -->
+  <div class="card">
+    <h2>5. 战略方向建议</h2>
+    <p class="lead">
+      <strong>⚠️ 方向性建议，非最终方案。</strong>以下四条建议构成覆盖「1年→2-3年→3-5年」的三层时间梯次：策略1（市场渗透/P0，见效最快）+策略4（多元化并购/P0，回答管线老化最直接）为两个锚点；策略2（产品开发/P1）+策略3（市场开发/P1-P2）为两条推进线。四大建议全部兼容A4约束（无组织重构要求、3个月可出方向性建议、匹配并购+大健康偏好）。
+    </p>
+
+    <h3>5.1 第一优先（P0）：健康消费品升级为第二增长引擎</h3>
+    <table>
+      <thead><tr><th style="width:18%">维度</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>核心逻辑</strong></td><td>唯一持续增长板块（+10-12% CAGR），蛋白粉>100%增速已验证品牌力和渠道力在消费品领域的适配性。云南白药健康品~70亿、华润三九CHC 125亿——两个竞品都靠大健康撑起半壁江山，而康恩贝仅有11%占比（7.2亿），差距既是问题也是潜力</td></tr>
+        <tr><td><strong>关联诊断</strong></td><td>BCG: 蛋白粉为明星品种+B2.4推荐短名单#1+SWOT O3健康消费+内外对照维度3（落后-大）+MECE Branch_2 B2.3大健康延伸机会</td></tr>
+        <tr><td><strong>具体方向</strong></td><td>①蛋白粉品类延伸（代餐/运动营养/特医食品）；②药食同源新品（灵芝孢子粉/铁皮石斛/枸杞等功能食品）；③肠炎宁品牌健康化（肠道益生菌/功能食品）；④中药睡眠/抗衰老产品线；⑤独立化运营——从「中药附属」升级为独立战略单元（独立品牌/团队/预算）</td></tr>
+        <tr><td><strong>预期影响</strong></td><td>3年内从7.2亿→20亿+，占营收比从~11%→25%+。营收增长逻辑从「中药周期驱动」转变为「消费品成长驱动」——资本市场估值将完全不同。同时不受集采影响，提供稳定的利润增长</td></tr>
+        <tr><td><strong>约束兼容性</strong></td><td>大健康为A4明确转型偏好；不涉及组织重构但需「轻量补充」——引入消费品人才而非调整现有架构；3个月内可完成品类延伸可行性评估</td></tr>
+        <tr><td><strong>难度/风险</strong></td><td><span class="tag tag-orange">中</span>——消费品运营能力与药品运营完全不同，需从外部引进消费品人才；品牌延伸可能稀释「康恩贝=专业中药」的心智</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.2 第二优先（P0）：并购获取儿科+新治疗领域品种</h3>
+    <table>
+      <thead><tr><th style="width:18%">维度</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>核心逻辑</strong></td><td>自研太慢（3-5年），并购可在12-18个月获得品种和渠道。2024年医疗并购750亿(+82%)，华润系近年靠并购实现跨越式增长。在并购窗口期，康恩贝却几乎缺席——这是最大的战略风险（好的标的在被竞品加速扫货）</td></tr>
+        <tr><td><strong>关联诊断</strong></td><td>内外对照维度6: 并购活跃度落后-大+SWOT WO策略: 并购弥补自研+BCG: 化药瘦狗退出+增量赛道#1儿科/#3神经/#4妇科/#5骨关节</td></tr>
+        <tr><td><strong>并购标的目标画像</strong></td><td>年营收1-5亿、有1-2个过亿独家中成药品种、OTC驱动（渠道可被康恩贝整合放大）、估值PE<20x、集中于「儿科>神经>妇科>骨关节」四个推荐赛道。全国符合画像标的池约50-80家</td></tr>
+        <tr><td><strong>并购引擎建设</strong></td><td>3个月内：组建BD专项小组(3-5人)+制定并购手册+标的长名单初筛(50-80→20-30→5-8)。6-9个月内：首批2-3家尽调完成。12-18个月内：完成首笔并购交易</td></tr>
+        <tr><td><strong>预期影响</strong></td><td>通过1-2笔并购（儿科中药企业+大健康消费品品牌），3年内贡献5-10亿增量营收。化药退出回收的5-15亿+自有经营现金流作为并购资金（3年可用10-30亿）</td></tr>
+        <tr><td><strong>约束兼容性</strong></td><td>并购为A4明确转型偏好；无预算硬约束；国资背景在并购中有信用和谈判优势。风险：管理层频繁变动(W5)可能影响并购决策——建议设立「并购专项委员会」以机制化决策</td></tr>
+        <tr><td><strong>难度/风险</strong></td><td><span class="tag tag-orange">中</span>——最大的风险不是「买贵了」而是「买了整不好」。需配置有中药企业整合经验的投后管理人才</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.3 第三优先（P0）：存量金牛品牌延伸</h3>
+    <table>
+      <thead><tr><th style="width:18%">维度</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>核心逻辑</strong></td><td>金牛品种（肠炎宁13亿+前列康）的现金流是并购和新业务的「血源」，但需要延长其生命周期并降低集采集中度风险。品牌延伸——从「单一治疗药」升级为「健康管理平台」——是被江中（健胃消食片→猴姑系列）和云南白药（止血药→牙膏）共同验证的路径</td></tr>
+        <tr><td><strong>关联诊断</strong></td><td>BCG: 肠炎宁/前列康为金牛→品牌延伸延长生命周期+SWOT ST策略: 品牌护城河建设+MECE Branch_1 B1.3: 肠炎宁处于成熟期</td></tr>
+        <tr><td><strong>具体方向</strong></td><td><strong>肠炎宁</strong>：从「止泻药」→「肠道健康管理平台」→儿童剂型+益生菌联合产品+肠道健康功能食品+数字化肠道健康管理<br><strong>前列康</strong>：从「前列腺用药」→「男性健康管理品牌」→检测+药品+抗衰老功能食品<br><strong>金笛</strong>：独立为「康恩贝儿童健康」子品牌→切入儿科中成药赛道，与并购和经典名方儿科品种形成品牌矩阵</td></tr>
+        <tr><td><strong>预期影响</strong></td><td>肠炎宁品牌延伸3年内额外贡献3-5亿营收增量（益生菌/功能食品/儿童版各1-2亿）；前列康5年内3-5亿；金笛儿童化+品牌独立3年内从3.7亿→5-7亿。延伸产品多为食品属性，不受集采影响——构建「集采防火墙」</td></tr>
+        <tr><td><strong>约束兼容性</strong></td><td>品牌延伸不涉及组织重构；3个月内可完成可行性评估和消费者调研</td></tr>
+        <tr><td><strong>难度/风险</strong></td><td><span class="tag tag-orange">中</span>——品牌延伸若定位不清晰（治疗药vs保健品的消费者认知混淆），可能稀释肠炎宁「治疗腹泻」的强心智。需用子品牌策略（如「肠炎宁·畅益生」）做区隔</td></tr>
+      </tbody>
+    </table>
+
+    <h3>5.4 第四优先（P0）：化药板块战略收缩</h3>
+    <table>
+      <thead><tr><th style="width:18%">维度</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>核心逻辑</strong></td><td>化药板块2025年降9.27%，集采冲击不可逆——无品牌壁垒的仿制药在集采后毛利率断崖式压缩。保留30-40%有品牌壁垒/成本优势的非集采品种，退出60-70%瘦狗品种——将回收资金和产能转投中药+大健康</td></tr>
+        <tr><td><strong>关联诊断</strong></td><td>BCG: 化药集采品种=瘦狗+SWOT WT策略: 止血+SWOT W3: 化药集采拖累+内外对照维度1: 化药拖累整体毛利率</td></tr>
+        <tr><td><strong>处置方案</strong></td><td>①保留品种(30-40%): 有品牌壁垒的非集采品种（如金艾康）+有成本优势的集采中标品种<br>②退出品种(60-70%): 纯集采无壁垒品种→批文出售/打包出售给专业仿制药运营商/资产置换中药品种（SWAP）<br>③保留原因: 保留化学药/生物药基础技术能力，支持「中药+化药联合治疗方案」研发</td></tr>
+        <tr><td><strong>预期影响</strong></td><td>回收资金5-15亿（取决于化药品种质量）；释放3-5pp毛利率空间（化药低毛利品种退出）；释放管理注意力→聚焦中药+大健康。营收缺口（9-14亿）通过健康消费品增长（8-13亿）对冲</td></tr>
+        <tr><td><strong>约束兼容性</strong></td><td>非组织重构——是业务组合优化；成功标准「利润率企稳回升」→直接改善利润率和ROE</td></tr>
+        <tr><td><strong>难度/风险</strong></td><td><span class="tag tag-orange">中</span>——化药批文在集采后价值大幅缩水，出售估值可能低于账面净值。需权衡「割肉出局」vs「继续持有微利运营」</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 第6章: 待验证假设 ===== -->
+  <div class="card">
+    <h2>6. 待验证假设</h2>
+    <p class="lead">
+      <strong>15条假设覆盖了从「止血（化药退出）」到「造血（大健康升级+儿科扩张）」到「输血（并购获取品种）」到「活血（肠炎宁/前列康品牌延伸）」的完整战略逻辑链。</strong>P0假设（10条）聚焦确定性最高+时间最紧迫的方向；P1假设（5条）聚焦需更多数据验证的方向。当前阶段假设的「方向正确性」有较强逻辑和数据支撑，但精确量化需等外部搜索补充标杆数据后提升。
+    </p>
+
+    <table>
+      <thead><tr><th style="width:5%">优先级</th><th style="width:5%">编号</th><th style="width:16%">赛道</th><th style="width:30%">假设内容</th><th style="width:8%">状态</th><th style="width:8%">可验证性</th><th style="width:14%">所需补充数据</th><th>补数据后结论变化</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H1</td><td>儿科中成药</td><td>金笛独立为儿童药品牌+经典名方获2-3个儿科批文→3年儿科板块3-4亿→8-10亿</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>金笛儿童规格营收拆分；经典名方儿科古方数；竞品（济川/健民/葵花）儿科营收</td><td>若金笛儿童>30%增速且经典名方儿科品种>10个→升级为高置信度战略推荐</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H2</td><td>儿科中成药</td><td>并购年营收1-3亿的儿科中药企业比自研「时间回报率」高3-5倍——12-18个月获品种 vs 3-5年</td><td><span class="tag tag-orange">待验证</span></td><td>❌ 低</td><td>2023-2025儿科领域并购交易库；标的可得性；康恩贝并购团队能力</td><td>若儿科领域交易活跃(>5笔且PE<20x)→升级为市场可行性验证</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H3</td><td>健康消费品</td><td>将健康消费品升级为独立战略单元+复制蛋白粉模式至2-3个品类→3年7.2亿→20亿+</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>蛋白粉近6个月逐月趋势（判断S型初段还是近拐点）；灵芝孢子粉/铁皮石斛等品类规模</td><td>若蛋白粉近6个月>80%+2个品类有10亿+空间→升级为高置信度预测</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H4</td><td>健康消费品</td><td>不做健康消费品独立化3年后将与「中药品牌消费品化」行业大趋势脱节，错失最大增长确定性</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>康恩贝内部对健康消费品战略定位现状；健康消费品团队能力评估</td><td>若内部已有独立规划的初步讨论→升级为内部共识的加速方案</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H5</td><td>并购能力</td><td>当前「几乎缺席并购市场」是最大战略风险——窗口期内若不行动，优质标的将被竞品扫光</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>康恩贝过去3年并购/投资行动记录；近12个月潜在标的被竞品收购情况</td><td>若过去12个月已有潜在标的被竞品收购→升级为紧急行动建议</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H6</td><td>并购能力</td><td>标的池约50-80家（年营收1-5亿/有独家品种），3个月完成长名单→短名单是可行的</td><td><span class="tag tag-orange">待验证</span></td><td>❌ 低</td><td>中药行业符合画像企业实际数量；标的出售意愿和估值预期；华润/国药系近年收购标的特征</td><td>若有并购数据库可拉取标的清单→升级为有名单的战略行动方案</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H7</td><td>化药处置</td><td>化药中40-60%品种（9-14亿营收）为应退出的瘦狗——退出释放资金和产能重新配置到中药+大健康</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>化药分品种营收/毛利/集采状态；品种的品牌壁垒和成本优势评估</td><td>若60%+品种毛利<30%且无品牌壁垒→「大规模退出」升级为确定性结论</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H8</td><td>化药处置</td><td>化药退出释放的9-14亿营收缺口可通过健康消费品增长(8-13亿)对冲——一退一进完成营收平移</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>健康消费品各子品类3年增长路径精确量化（蛋白粉→5亿/灵芝→3亿/其他→4亿）</td><td>若3年增长路径可精确量化→升级为可执行的营收平移计划</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H9</td><td>肠炎宁延伸</td><td>肠炎宁从「腹泻治疗药」→「肠道健康管理平台」可在不增加大幅投入下额外贡献3-5亿营收</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>肠炎宁品牌延伸消费者调研（肠道健康品类信任延伸率）；益生菌/功能食品市场规模</td><td>若消费者调研信任延伸率>60%→升级为市场验证的品牌延伸策略</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">P0</span></td><td>H10</td><td>研发配置</td><td>将50%研发预算从仿制药一致性评价转向经典名方+中药创新药，研发商业化转化效率可提升3-5倍</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>研发费用按「仿制药/二次开发/创新药」拆分；经典名方开发的单品种成本；仿制药一致性评价的集采后ROI</td><td>若仿制药消耗>40%研发且ROI为负→升级为必须立即执行的资源重新配置</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P1</span></td><td>H11</td><td>神经/睡眠</td><td>通过差异化品牌定位（都市失眠人群）+经典名方酸枣仁汤+消费品化延伸→5年5-10亿</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>金康灵力精确营收/份额/差异化特征；佐力渠道策略和品牌定位缝隙</td><td>若确认有独特定位且未覆盖细分→从P1升级为P0强烈推荐</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P1</span></td><td>H12</td><td>神经/睡眠</td><td>若金康灵力无法差异化→神经赛道资源转向并购获取差异化的神经品种</td><td><span class="tag tag-orange">待验证</span></td><td>❌ 低</td><td>依赖H11的深度评估结论+神经赛道并购标的可得性</td><td>若金康灵力评估为「无法差异化」且有并购标的→从备选方案升为唯一方案（P0）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P1</span></td><td>H13</td><td>妇科中成药</td><td>通过经典名方妇科品种+独立品牌定位更年期女性调理→5年内3-5亿</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>妇科细分赛道（调经/更年期/乳腺）规模增速；经典名方妇科可用方剂数量</td><td>若至少有1个50亿+且CR3<30%的子品类→从中期推荐升级为优先布局</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P1</span></td><td>H14</td><td>骨关节外用</td><td>作为「并购观察」赛道——当出现营收1-5亿/有骨伤外用品种标的时快速出手，PE 15-20x</td><td><span class="tag tag-orange">待验证</span></td><td>❌ 低</td><td>骨伤外用品种的中药企业并购标的清单和估值数据</td><td>若市场扫描发现3-5个符合画像标的→从被动观察升级为主动出击</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue">P1</span></td><td>H15</td><td>前列康延伸</td><td>前列康从「前列腺治疗药」→「男性健康管理品牌」，5年内额外贡献3-5亿营收</td><td><span class="tag tag-orange">待验证</span></td><td>⬜ 中</td><td>前列康品牌延伸消费者调研；男性健康消费品市场规模；云南白药品牌延伸过程数据</td><td>若消费者信任延伸率>50%（参考云南白药在口腔护理）→从P1探索升级为P0-P1加速</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>假设清单总体验证信号</h4>
+    <table>
+      <thead><tr><th>指标</th><th>评估</th></tr></thead>
+      <tbody>
+        <tr><td><strong>整体可验证性评级</strong></td><td>⬜ 中——15条假设中：⬜中=11条，❌低=4条，✅高=0条。逻辑链完整且与B2诊断高度一致，但精确量化需要外部搜索补充标杆数据</td></tr>
+        <tr><td><strong>主要验证缺口</strong></td><td>集中在三个方向：①并购标的可得性（5条假设涉及）；②品种级精确营收/市场份额（6条假设涉及）；③消费者品牌延伸接受度（4条假设涉及）</td></tr>
+        <tr><td><strong>补数据后整体升级预期</strong></td><td>外部搜索完成D003-D007的5项P0数据拉取后，预计70%的假设可从⬜中/❌低升级为⬜中/✅高——特别是并购标的假设和市场份额相关假设</td></tr>
+        <tr><td><strong>A4约束全扫描</strong></td><td>15条假设全部通过——无组织重构、兼容3个月窗口、匹配并购+大健康偏好</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 第7章: 下一步 ===== -->
+  <div class="card">
+    <h2>7. 下一步行动建议</h2>
+
+    <h3>7.1 验证假设的优先级路线图</h3>
+    <div class="action-cards">
+      <div class="action-card p0">
+        <div class="action-num">Phase 1&nbsp;&nbsp; 立即启动（本周-1个月）</div>
+        <h4>获取P0关键数据 + 启动战略准备</h4>
+        <ul style="margin: 8px 0 0 20px; line-height: 2;">
+          <li><strong>数据拉取</strong>：启动外部搜索获取D003（赛道规模增速）、D004（竞争格局/CR3-CR5）、D005（分品种营收）、D007（并购交易数据库）——预计可填补70%的关键验证缺口</li>
+          <li><strong>内部数据收集</strong>：向康恩贝战略/财务部门索取化药板块分品种数据、各品种近3年营收/增速、研发费用拆分、OTC渠道覆盖率</li>
+          <li><strong>战略讨论</strong>：与康恩贝确认对健康消费品升级为独立战略单元的内部态度</li>
+        </ul>
+      </div>
+      <div class="action-card p1">
+        <div class="action-num">Phase 2&nbsp;&nbsp; 1-3个月</div>
+        <h4>BD团队组建 + 标的初筛 + 经典名方品种筛选 + 消费者调研</h4>
+        <ul style="margin: 8px 0 0 20px; line-height: 2;">
+          <li>组建3-5人BD专项小组（核心团队：BD/法务/财务/业务评估）</li>
+          <li>对「儿科/神经/妇科/骨关节」四个赛道做标的长名单初筛（50-80→20-30→5-8）</li>
+          <li>从107首古代经典名方目录中筛选儿科/神经/妇科相关方剂——排出Top 5-8开发优先级</li>
+          <li>启动肠炎宁/前列康品牌延伸的消费者调研（信任延伸率）</li>
+        </ul>
+      </div>
+      <div class="action-card p1">
+        <div class="action-num">Phase 3&nbsp;&nbsp; 3-6个月</div>
+        <h4>化药退出方案 + 首批并购尽调 + 经典名方立项</h4>
+        <ul style="margin: 8px 0 0 20px; line-height: 2;">
+          <li>完成化药板块分品种退出/保留决策（P0数据D006到位后精确划定边界）</li>
+          <li>对2-3家优先并购标的启动初步尽调</li>
+          <li>经典名方Top 3品种进入药学研究和工艺研究阶段</li>
+          <li>健康消费品独立品牌和团队建设方案设计完成</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>7.2 按紧急程度分级的内部数据需求清单</h3>
+    <table>
+      <thead><tr><th style="width:5%">级别</th><th>需求</th><th>具体内容</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-red">🔴 紧急</span></td><td>化药分品种数据</td><td>各化药品种近3年营收/毛利/集采中标状态/品牌壁垒评估</td><td>划定化药保留/退出精确边界（H7/H8验证）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">🔴 紧急</span></td><td>17个过亿品种分品种营收</td><td>各品种2022-2025年精确营收/增速/毛利/销售模式(OTC/处方)</td><td>将BCG从推断级升级至数据驱动级（D005）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-red">🔴 紧急</span></td><td>研发费用拆分</td><td>仿制药一致性评价/中药二次开发/创新药/其他的精确费用占比</td><td>验证H10「研发转轨能提升3-5倍效率」（D006）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">🟡 重要</span></td><td>蛋白粉近24个月逐月趋势</td><td>判断增长的持续性——S型初段(可持续)还是已近拐点(将回落)</td><td>验证H3/H4的「3年20亿」目标合理性</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">🟡 重要</span></td><td>OTC渠道精确数据</td><td>覆盖药店终端数/KA连锁合作深度/OTC vs 处方营收占比/县域vs城市分布</td><td>支撑BCG和SWOT中渠道资产的精确评估（D102）</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange">🟡 重要</span></td><td>管理层变动历史</td><td>2020年国资入主后历任董事长/总裁的任期和离职原因</td><td>评估并购决策的连续性和投后整合执行力</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">🟢 常规</span></td><td>肠炎宁/前列康集采风险评估</td><td>各省级中成药集采品种申报范围中是否含肠炎宁/前列康</td><td>量化核心品种的集采黑天鹅概率</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">🟢 常规</span></td><td>GAP种植基地详情</td><td>基地面积/覆盖品种/自有vs外采比例/种植成本vs市场价差距</td><td>支撑大健康消费品「源头可控」的竞争优势叙事</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>7.3 进入 Step 3（深度分析）的前提条件清单</h3>
+    <table>
+      <thead><tr><th>#</th><th>前提条件</th><th>当前状态</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>D003-D007共5项P0外部数据拉取完成——赛道规模/竞争格局/品种营收/并购交易数据到位</td><td><span class="tag tag-red">待执行</span>（2b.2外部参照搜索）</td></tr>
+        <tr><td>2</td><td>康恩贝内部财务/渠道/研发拆分数据收集完成（🔴紧急清单中的3项）</td><td><span class="tag tag-red">待客户提供</span></td></tr>
+        <tr><td>3</td><td>初版报告经战略/BD部门审阅并反馈修改意见</td><td><span class="tag tag-orange">待反馈</span></td></tr>
+        <tr><td>4</td><td>15条假设中有至少10条完成「可验证性升级」（从⬜中/❌低→⬜中/✅高）</td><td><span class="tag tag-red">待数据支撑</span></td></tr>
+        <tr><td>5</td><td>康恩贝管理层对「健康消费品升级为第二引擎」和「化药板块战略退出」两大方向性建议做出原则性表态</td><td><span class="tag tag-orange">待讨论</span></td></tr>
+        <tr><td>6</td><td>确认Step 3的深度分析范围——是否需要对并购标的做尽调级分析、是否展开组织能力评估（McKinsey 7S）</td><td><span class="tag tag-orange">待确认</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>7.4 关键风险提示</h3>
+    <table>
+      <thead><tr><th>风险</th><th>严重程度</th><th>影响</th><th>缓释措施</th></tr></thead>
+      <tbody>
+        <tr><td>管理层频繁变动影响战略执行连续性</td><td><span class="tag tag-orange">中</span></td><td>并购决策可能因管理层变动而搁置或逆转；品牌升级和消费品化需要3-5年的战略定力</td><td>建议设立「战略执行委员会」（而非依赖个人决策），将方向性建议转化为董事会决议以锁定战略方向</td></tr>
+        <tr><td>中成药集采扩面覆盖肠炎宁</td><td><span class="tag tag-red">高（潜在）</span></td><td>若肠炎宁（13亿/20%营收）纳入集采且降价>50%，营收和利润底线将受重大冲击</td><td>加速肠炎宁品牌延伸（食品属性的益生菌/功能食品不受集采影响）；关注省级集采品种申报范围</td></tr>
+        <tr><td>蛋白粉高增速不可持续</td><td><span class="tag tag-orange">中</span></td><td>若蛋白粉增速在2026年回落至30-50%，「3年20亿」的大健康目标需下调，H3/H4的核心逻辑受损</td><td>审视近6个月逐月趋势判断增长曲线形状；争取3-5个品类并行延伸以分散单一品类风险</td></tr>
+        <tr><td>并购标的池太小或估值过高</td><td><span class="tag tag-orange">中</span></td><td>若3-6个月内扫描发现50-80家的标的池实际<20家或PE普遍>25x，并购策略的可行性打折</td><td>同步推进自研路径（经典名方），不将全部希望押注在并购上；扩大搜索范围（不限于已推荐的4个赛道）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 附录 ===== -->
+  <div class="card" style="border-top: 3px solid var(--accent);">
+    <h2 style="border-bottom:none; margin-bottom:8px;">附录：数据来源与置信度说明</h2>
+    <table>
+      <thead><tr><th>标注格式</th><th>说明</th><th>本报告主要使用场景</th></tr></thead>
+      <tbody>
+        <tr><td><strong>[年报: 公司名 年份]</strong></td><td>公开财务数据，置信度✅高</td><td>康恩贝2021-2025年五大财务指标趋势、研发投入3.26亿等</td></tr>
+        <tr><td><strong>[用户提供: 日期, 内容]</strong></td><td>用户直接输入的项目数据，置信度⬜中</td><td>17个过亿品种、蛋白粉>100%增速、各治疗领域市场规模、集采/并购行业数据、对标企业数据</td></tr>
+        <tr><td><strong>[推断: 依据, 计算方法]</strong></td><td>基于已知数据的逻辑推演，置信度❌低至⬜中</td><td>Porter五力赛道评分、BCG四象限分类、品牌延伸的营收目标、并购标的池规模估算</td></tr>
+        <tr><td><strong>[待确认: 需要什么信息]</strong></td><td>数据缺失但分析所需，置信度❓未知</td><td>化药分品种营收/毛利/集采状态、OTC渠道精确覆盖数、肠炎宁近3年精确营收增速</td></tr>
+        <tr><td><strong>[Tavily: 来源名, 日期]</strong></td><td>Tavily外部搜索数据</td><td>本初版报告尚未使用（外部搜索待Step 2b.2执行）</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px; color:var(--muted); margin-top:12px;">
+      本初版报告为方向性建议，所有数字和结论均基于截至2026年7月7日的可用数据。<strong>报告中标注[推断]和[待确认]的内容需要在进入Step 3深度分析前通过外部搜索和客户内部数据进行验证和升级。</strong>BCG矩阵品类分类、Porter五力赛道评分、内外对照差距量化均需行业数据库验证后方可作为最终决策依据。
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
